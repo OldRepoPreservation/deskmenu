@@ -84,8 +84,9 @@ MANS = $(man_MANS)
 
 NROFF = nroff
 DIST_COMMON =  README AUTHORS COPYING ChangeLog INSTALL Makefile.am \
-Makefile.in NEWS acinclude.m4 aclocal.m4 config.guess config.sub \
-configure configure.in install-sh missing mkinstalldirs
+Makefile.in NEWS TODO acinclude.m4 aclocal.m4 config.guess config.sub \
+configure configure.in install-sh missing mkinstalldirs src/config.h.in \
+src/stamp-h.in
 
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
@@ -108,6 +109,34 @@ config.status: $(srcdir)/configure.in $(CONFIG_STATUS_DEPENDENCIES)
 	$(SHELL) ./config.status --recheck
 $(srcdir)/configure: $(srcdir)/configure.in $(ACLOCAL_M4) $(CONFIGURE_DEPENDENCIES)
 	cd $(srcdir) && $(AUTOCONF)
+
+src/config.h: src/stamp-h
+	@if test ! -f $@; then \
+		rm -f src/stamp-h; \
+		$(MAKE) src/stamp-h; \
+	else :; fi
+src/stamp-h: $(srcdir)/src/config.h.in $(top_builddir)/config.status
+	cd $(top_builddir) \
+	  && CONFIG_FILES= CONFIG_HEADERS=src/config.h \
+	     $(SHELL) ./config.status
+	@echo timestamp > src/stamp-h 2> /dev/null
+$(srcdir)/src/config.h.in: $(srcdir)/src/stamp-h.in
+	@if test ! -f $@; then \
+		rm -f $(srcdir)/src/stamp-h.in; \
+		$(MAKE) $(srcdir)/src/stamp-h.in; \
+	else :; fi
+$(srcdir)/src/stamp-h.in: $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+	cd $(top_srcdir) && $(AUTOHEADER)
+	@echo timestamp > $(srcdir)/src/stamp-h.in 2> /dev/null
+
+mostlyclean-hdr:
+
+clean-hdr:
+
+distclean-hdr:
+	-rm -f src/config.h
+
+maintainer-clean-hdr:
 
 install-man1:
 	$(mkinstalldirs) $(DESTDIR)$(man1dir)
@@ -337,28 +366,29 @@ distclean-generic:
 	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
 
 maintainer-clean-generic:
-mostlyclean-am:  mostlyclean-tags mostlyclean-generic
+mostlyclean-am:  mostlyclean-hdr mostlyclean-tags mostlyclean-generic
 
 mostlyclean: mostlyclean-recursive
 
-clean-am:  clean-tags clean-generic mostlyclean-am
+clean-am:  clean-hdr clean-tags clean-generic mostlyclean-am
 
 clean: clean-recursive
 
-distclean-am:  distclean-tags distclean-generic clean-am
+distclean-am:  distclean-hdr distclean-tags distclean-generic clean-am
 
 distclean: distclean-recursive
 	-rm -f config.status
 
-maintainer-clean-am:  maintainer-clean-tags maintainer-clean-generic \
-		distclean-am
+maintainer-clean-am:  maintainer-clean-hdr maintainer-clean-tags \
+		maintainer-clean-generic distclean-am
 	@echo "This command is intended for maintainers to use;"
 	@echo "it deletes files that may require special tools to rebuild."
 
 maintainer-clean: maintainer-clean-recursive
 	-rm -f config.status
 
-.PHONY: install-man1 uninstall-man1 install-man uninstall-man \
+.PHONY: mostlyclean-hdr distclean-hdr clean-hdr maintainer-clean-hdr \
+install-man1 uninstall-man1 install-man uninstall-man \
 install-data-recursive uninstall-data-recursive install-exec-recursive \
 uninstall-exec-recursive installdirs-recursive uninstalldirs-recursive \
 all-recursive check-recursive installcheck-recursive info-recursive \
