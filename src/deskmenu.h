@@ -36,8 +36,6 @@
 #include <gtk/gtkinvisible.h>
 #include <gdk/gdkx.h>
 
-#define PROGNAME	"DESKMENU"
-
 #define WIN_HINTS				0
 #define WIN_WORKSPACE				1
 #define WIN_WORKSPACE_COUNT			2
@@ -55,26 +53,29 @@ extern Display *dpy;
 extern int scr, quit_menu;
 extern Window root, proxy_win;
 extern Atom wm_state, gnome[GNOME_HINT_COUNT];
-extern char *locale;
-extern long get_wm_state(Window);
-extern void set_gnome_hint(Window, int, long);
-extern long get_gnome_hint(Window, int);
+extern char *locale, *rcfile, *program_name;
+extern KeyCode keycode;
+extern int modifier;
+extern long get_wm_state (Window);
+extern void set_gnome_hint (Window, int, long);
+extern long get_gnome_hint (Window, int);
+extern void usage (int status);
 
 /* keyboard.c */
 extern int NumLockMask, CapsLockMask, ScrollLockMask;
-extern void grab_key(int, unsigned int, Window);
-extern void init_keyboard(void);
+extern void grab_key (int, unsigned int, Window);
+extern void init_keyboard (void);
 
 /* popup.c */
 extern int mode;
-extern void popup_menu(XEvent *);
-extern GtkWidget *add_menu_item(GtkMenu *, char *, GtkSignalFunc, gpointer);
+extern void popup_menu (XEvent *);
+extern GtkWidget *add_menu_item (GtkMenu *, char *, GtkSignalFunc, gpointer);
 
 /* window.c */
 extern char *get_icon_name (Window win);
-extern void add_windows_menu(GtkMenu *, char *);
+extern void add_windows_menu (GtkMenu *, char *);
 
 /* workspace.c */
-extern void add_workspace_menu(GtkMenu *, char *);
+extern void add_workspace_menu (GtkMenu *, char *);
 
 #endif /* DESKMENU_H */

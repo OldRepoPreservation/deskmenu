@@ -16,8 +16,6 @@ AC_SUBST(GTK_REQUIRED)
 ISODATE=`date +%Y-%m-%d`
 AC_SUBST(ISODATE)
 
-AC_CANONICAL_HOST
-
 dnl Checks for programs.
 AC_PROG_INSTALL
 AC_PROG_CC
@@ -43,6 +41,5 @@ AC_CHECK_LIB(Xext, main,, AC_MSG_ERROR([The X Window System installed on this ma
 dnl Checks for typedefs, structures, and compiler characteristics.
 
 dnl Checks for library functions.
-
 
 AC_OUTPUT(Makefile src/Makefile)

@@ -57,8 +57,6 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-host_alias = @host_alias@
-host_triplet = @host@
 CC = @CC@
 GTK_CFLAGS = @GTK_CFLAGS@
 GTK_CONFIG = @GTK_CONFIG@
@@ -69,11 +67,11 @@ MAKEINFO = @MAKEINFO@
 PACKAGE = @PACKAGE@
 VERSION = @VERSION@
 
-CFLAGS = @CFLAGS@ @X_CFLAGS@ -DRCFILE=\".deskmenurc\" $(DEBUG) `gtk-config --cflags`
+CFLAGS = -O2 -g @CFLAGS@ @X_CFLAGS@ `gtk-config --cflags`
 LIBS = @LIBS@ @X_LIBS@ `gtk-config --libs`
 bin_PROGRAMS = deskmenu
 
-deskmenu_SOURCES = deskmenu.c deskmenu.h popup.c windows.c workspaces.c keyboard.c 		 config.h xmalloc.c system.h aclocal.m4 getopt.c getopt1.c getopt.h
+deskmenu_SOURCES = deskmenu.c deskmenu.h popup.c windows.c workspaces.c keyboard.c 		 config.h xmalloc.c system.h getopt.c getopt1.c getopt.h
 
 deskmenu_LDADD = -lX11
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs

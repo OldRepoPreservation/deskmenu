@@ -55,7 +55,7 @@ void free ();
 static VOID *fixup_null_alloc (size_t n);
 VOID *xmalloc (size_t n);
 VOID *xcalloc (size_t n, size_t s);
-VOID *xrealloc (VOID *p, size_t n);
+VOID *xrealloc (VOID * p, size_t n);
 char *xstrdup (char *p);
 #endif
 

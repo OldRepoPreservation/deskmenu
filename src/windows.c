@@ -21,14 +21,15 @@
 
 #include "deskmenu.h"
 
-void raise_window(GtkWidget *widget, Window win)
+void
+raise_window (GtkWidget * widget, Window win)
 {
 #ifdef DEBUG
-  printf("raise_window\n");
+  printf ("raise_window\n");
 #endif
 
-  XMapRaised(dpy, win);
-  XSetInputFocus(dpy, win, RevertToPointerRoot, CurrentTime);
+  XMapRaised (dpy, win);
+  XSetInputFocus (dpy, win, RevertToPointerRoot, CurrentTime);
 }
 
 char *
@@ -63,40 +64,48 @@ get_icon_name (Window win)
     }
 }
 
-void add_windows_menu(GtkMenu *menu, char *title)
+void
+add_windows_menu (GtkMenu * menu, char *title)
 {
   GtkWidget *menu_item, *win_menu;
   Atom real_type;
   int real_format;
-  unsigned long items_read, items_left, item=0;
-  long *win=NULL;
-  char *name=NULL, label[27];
+  unsigned long items_read, items_left, item = 0;
+  long *win = NULL;
+  char *name = NULL, label[27];
 
 #ifdef DEBUG
-  printf("add_windows_menu\n");
+  printf ("add_windows_menu\n");
 #endif
 
-  win_menu=gtk_menu_new();
-  menu_item=add_menu_item(GTK_MENU(menu), title, NULL, NULL);
+  win_menu = gtk_menu_new ();
+  menu_item = add_menu_item (GTK_MENU (menu), title, NULL, NULL);
 
-  while(XGetWindowProperty(dpy, root, gnome[WIN_CLIENT_LIST], item++, 1L, False, XA_CARDINAL, &real_type, &real_format, &items_read, &items_left, (unsigned char **)&win)==Success && items_read)
-  {
-    if(!(get_gnome_hint(*win, WIN_HINTS)&WIN_HINTS_SKIP_WINLIST) && (get_gnome_hint(*win, WIN_WORKSPACE)==get_gnome_hint(root, WIN_WORKSPACE)))
+  while (XGetWindowProperty
+	 (dpy, root, gnome[WIN_CLIENT_LIST], item++, 1L, False, XA_CARDINAL,
+	  &real_type, &real_format, &items_read, &items_left,
+	  (unsigned char **) &win) == Success && items_read)
     {
-      name = get_icon_name(*win);
-      if (name)
+      if (!(get_gnome_hint (*win, WIN_HINTS) & WIN_HINTS_SKIP_WINLIST)
+	  && (get_gnome_hint (*win, WIN_WORKSPACE) ==
+	      get_gnome_hint (root, WIN_WORKSPACE)))
 	{
-	  if(strlen(name)>=25)
-	    strcpy(name+21, "...");
-	  strcpy(label, name);
-	  if(get_wm_state(*win)==IconicState)
-	    sprintf(label, "[%s]", name);
-	   
-	  add_menu_item(GTK_MENU(win_menu), label, raise_window, (gpointer) *win);
-	  XFree(name);
+	  name = get_icon_name (*win);
+	  if (name)
+	    {
+	      if (strlen (name) >= 25)
+		strcpy (name + 21, "...");
+	      strcpy (label, name);
+	      if (get_wm_state (*win) == IconicState)
+		sprintf (label, "[%s]", name);
+
+	      add_menu_item (GTK_MENU (win_menu), label, raise_window,
+			     (gpointer) * win);
+	      XFree (name);
+	    }
 	}
+      if (win)
+	XFree (win);
     }
-    if(win) XFree(win);
-  }
-  gtk_menu_item_set_submenu(GTK_MENU_ITEM(menu_item), win_menu);
+  gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu_item), win_menu);
 }

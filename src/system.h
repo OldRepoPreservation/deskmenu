@@ -64,11 +64,11 @@
 #if !defined(S_ISSOCK) && defined(S_IFSOCK)
 #define S_ISSOCK(m) (((m) & S_IFMT) == S_IFSOCK)
 #endif
-#if !defined(S_ISMPB) && defined(S_IFMPB) /* V7 */
+#if !defined(S_ISMPB) && defined(S_IFMPB)	/* V7 */
 #define S_ISMPB(m) (((m) & S_IFMT) == S_IFMPB)
 #define S_ISMPC(m) (((m) & S_IFMT) == S_IFMPC)
 #endif
-#if !defined(S_ISNWK) && defined(S_IFNWK) /* HP/UX */
+#if !defined(S_ISNWK) && defined(S_IFNWK)	/* HP/UX */
 #define S_ISNWK(m) (((m) & S_IFMT) == S_IFNWK)
 #endif
 
@@ -93,9 +93,9 @@
 #define mkfifo(path, mode) (mknod ((path), (mode) | S_IFIFO, 0))
 #endif
 
-#ifdef HAVE_SYS_PARAM_H
-#include <sys/param.h>
-#endif
+//#ifdef HAVE_SYS_PARAM_H
+//#include <sys/param.h>
+//#endif
 
 /* <unistd.h> should be included before any preprocessor test
    of _POSIX_VERSION.  */
@@ -224,13 +224,13 @@ char *getenv ();
 # define NLENGTH(direct) ((direct)->d_namlen)
 # ifdef HAVE_SYS_NDIR_H
 #  include <sys/ndir.h>
-# endif /* HAVE_SYS_NDIR_H */
+# endif	/* HAVE_SYS_NDIR_H */
 # ifdef HAVE_SYS_DIR_H
 #  include <sys/dir.h>
-# endif /* HAVE_SYS_DIR_H */
+# endif	/* HAVE_SYS_DIR_H */
 # ifdef HAVE_NDIR_H
 #  include <ndir.h>
-# endif /* HAVE_NDIR_H */
+# endif	/* HAVE_NDIR_H */
 #endif /* HAVE_DIRENT_H */
 
 #ifdef CLOSEDIR_VOID
@@ -256,11 +256,11 @@ char *getenv ();
    (including indirect blocks). */
 #ifndef HAVE_ST_BLOCKS
 # define ST_BLKSIZE(statbuf) DEV_BSIZE
-# if defined(_POSIX_SOURCE) || !defined(BSIZE) /* fileblocks.c uses BSIZE.  */
+# if defined(_POSIX_SOURCE) || !defined(BSIZE)	/* fileblocks.c uses BSIZE.  */
 #  define ST_NBLOCKS(statbuf) (((statbuf).st_size + 512 - 1) / 512)
 # else /* !_POSIX_SOURCE && BSIZE */
 #  define ST_NBLOCKS(statbuf) (st_blocks ((statbuf).st_size))
-# endif /* !_POSIX_SOURCE && BSIZE */
+# endif	/* !_POSIX_SOURCE && BSIZE */
 #else /* HAVE_ST_BLOCKS */
 /* Some systems, like Sequents, return st_blksize of 0 on pipes. */
 # define ST_BLKSIZE(statbuf) ((statbuf).st_blksize > 0 \
@@ -273,14 +273,14 @@ char *getenv ();
 #  if defined(_AIX) && defined(_I386)
 /* AIX PS/2 counts st_blocks in 4K units.  */
 #   define ST_NBLOCKS(statbuf) ((statbuf).st_blocks * 8)
-#  else /* not AIX PS/2 */
+#  else	/* not AIX PS/2 */
 #   if defined(_CRAY)
 #    define ST_NBLOCKS(statbuf) ((statbuf).st_blocks * ST_BLKSIZE(statbuf)/512)
 #   else /* not AIX PS/2 nor CRAY */
 #    define ST_NBLOCKS(statbuf) ((statbuf).st_blocks)
 #   endif /* not _CRAY */
 #  endif /* not AIX PS/2 */
-# endif /* !hpux */
+# endif	/* !hpux */
 #endif /* HAVE_ST_BLOCKS */
 
 /* Convert B 512-byte blocks to kilobytes if K is nonzero,
@@ -369,8 +369,8 @@ char *alloca ();
 #define __P(args) args
 #else
 #define __P(args) ()
-#endif  /* GCC.  */
-#endif  /* Not __P.  */
+#endif /* GCC.  */
+#endif /* Not __P.  */
 
 /* Take care of NLS matters.  */
 
@@ -378,7 +378,7 @@ char *alloca ();
 # include <locale.h>
 #endif
 #if !HAVE_SETLOCALE
-# define setlocale(Category, Locale) /* empty */
+# define setlocale(Category, Locale)	/* empty */
 #endif
 
 #if ENABLE_NLS
@@ -386,9 +386,9 @@ char *alloca ();
 # define _(Text) gettext (Text)
 #else
 # undef bindtextdomain
-# define bindtextdomain(Domain, Directory) /* empty */
+# define bindtextdomain(Domain, Directory)	/* empty */
 # undef textdomain
-# define textdomain(Domain) /* empty */
+# define textdomain(Domain)	/* empty */
 # define _(Text) Text
 #endif
 
