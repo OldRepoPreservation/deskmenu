@@ -173,7 +173,7 @@ initialize (int argc, char *argv[])
       size_t size =
 	sizeof (char) * (strlen (getenv ("HOME")) + 1) +
 	sizeof (char) * (strlen (".deskmenurc") + 1);
-      rcfile = (char *) malloc (size);
+      rcfile = (char *) xmalloc (size);
       snprintf (rcfile, size, "%s/%s", getenv ("HOME"), ".deskmenurc");
     }
 
