@@ -1,8 +1,9 @@
-deskmenu (1.3.1-2) unstable; urgency=low
+deskmenu (1.3.2-1) unstable; urgency=low
 
+  * Make --button work again.
   * Deskmenu should suggest "menu".
 
- -- Stefan Pfetzing <dreamind@dreamind.de>  Sat, 15 Jun 2002 19:00:52 +0200
+ -- Stefan Pfetzing <dreamind@dreamind.de>  Sat, 15 Jun 2002 20:40:19 +0200
 
 deskmenu (1.3.1-1) unstable; urgency=low
 

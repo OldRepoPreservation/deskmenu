@@ -67,6 +67,7 @@ static struct option const long_options[] = {
   {"help", no_argument, 0, 'h'},
   {"version", no_argument, 0, 'V'},
   {"file", required_argument, 0, 'f'},
+  {"button", required_argument, 0, 'b'},
   {NULL, 0, NULL, 0}
 };
 /* }}}1 */
