@@ -126,6 +126,15 @@ build_submenu (FILE * rc, GtkWidget * menu)
 
   while (fgets (buf, sizeof buf, rc))
     {
+      char *comment;
+      /* to make sure comments are ignored */
+      comment = strchr (buf, '#');
+      if (comment)
+	{
+	  comment[0] = '\n';
+	  comment[1] = '\0';
+	}
+
       lvalue = strtok (buf, "=");
       if (lvalue)
 	{

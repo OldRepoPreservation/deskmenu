@@ -184,6 +184,7 @@ initialize (int argc, char *argv[])
       /* an error while stating occured */
       fprintf (stderr, "%s: ", PACKAGE);
       perror (rcfile);
+      free(rcfile);
       /* check if /etc/deskmenurc is existant */
       rcfile = "/etc/deskmenurc";
       if (stat (rcfile, &stat_buf))
@@ -211,6 +212,19 @@ initialize (int argc, char *argv[])
       char buf[1024], *lvalue, *rvalue, *k;
       while (fgets (buf, sizeof buf, rc))
 	{
+	  char *comment;
+	  /* to make sure comments are ignored */
+	  comment = strchr(buf, '#');
+	  if (comment)
+	    {
+	      comment[0] = '\n';
+	      comment[1] = '\0';
+	    }
+
+	  /* remove all spaces and tabs */
+	  while (comment = strpbrk(buf, " \t"))
+	    strcpy (comment, comment+1);
+	  
 	  lvalue = strtok (buf, "=");
 	  if (lvalue)
 	    {
