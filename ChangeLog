@@ -1,0 +1,4 @@
+For an up to date version of the changes look into debian/changelog.
+
+Changes in 1.3.0
+	* Added CTRL+ESC hot key to popup menu.

@@ -26,7 +26,6 @@ Display *dpy;
 int scr, quit_menu=False, button=Button2;
 Atom wm_state, gnome[GNOME_HINT_COUNT];
 Window root, proxy_win;
-int NumLockMask, CapsLockMask, ScrollLockMask;
 char *locale;
 
 void signal_handler(int signal)
@@ -92,48 +91,6 @@ long get_gnome_hint(Window w, int a)
   return value;
 }
 
-void init_keyboard()
-{
-  XModifierKeymap *xmk=NULL;
-  KeyCode *map;
-  int m, k;
-
-#ifdef DEBUG
-  printf("init_keyboard\n");
-#endif
-
-  xmk=XGetModifierMapping(dpy);
-  if(xmk)
-  {
-    map=xmk->modifiermap;
-    for(m=0;m<8;m++)
-      for(k=0;k<xmk->max_keypermod; k++, map++)
-      {
-        if(*map==XKeysymToKeycode(dpy, XK_Num_Lock))
-          NumLockMask=(1<<m);
-        if(*map==XKeysymToKeycode(dpy, XK_Caps_Lock))
-          CapsLockMask=(1<<m);
-        if(*map==XKeysymToKeycode(dpy, XK_Scroll_Lock))
-          ScrollLockMask=(1<<m);
-      }
-    XFreeModifiermap(xmk);
-  }
-}
-
-void grab_key(int keycode, unsigned int modifiers, Window w)
-{
-  if(keycode)
-  {
-    XGrabKey(dpy, keycode, modifiers, w, False, GrabModeAsync, GrabModeAsync);
-    XGrabKey(dpy, keycode, modifiers|NumLockMask, w, False, GrabModeAsync, GrabModeAsync); 
-    XGrabKey(dpy, keycode, modifiers|CapsLockMask, w, False, GrabModeAsync, GrabModeAsync);
-    XGrabKey(dpy, keycode, modifiers|ScrollLockMask, w, False, GrabModeAsync, GrabModeAsync);
-    XGrabKey(dpy, keycode, modifiers|NumLockMask|CapsLockMask, w, False, GrabModeAsync, GrabModeAsync);
-    XGrabKey(dpy, keycode, modifiers|NumLockMask|ScrollLockMask, w, False, GrabModeAsync, GrabModeAsync);
-    XGrabKey(dpy, keycode, modifiers|NumLockMask|CapsLockMask|ScrollLockMask, w, False, GrabModeAsync, GrabModeAsync);
-  }
-}
-
 void initialize(int argc, char *argv[])
 {
   int i;
@@ -164,6 +121,9 @@ void initialize(int argc, char *argv[])
   act.sa_handler=signal_handler;
   act.sa_flags=0;
   sigaction(SIGCHLD, &act, NULL);
+  /* currently do *nothing* when getting a HUP, because reloading of
+   * the configfile happens everytime the menu is build */
+  sigaction(SIGHUP, &act, NULL);
 
   /* Wait until a GNOME compliant WM is running */
   while(!XInternAtom(dpy, "_WIN_DESKTOP_BUTTON_PROXY", True));
@@ -191,15 +151,23 @@ int main(int argc, char *argv[])
       XEvent ev;
       XNextEvent(dpy, &ev);
 
-      if((ev.type==ButtonPress && ev.xbutton.button==button) || ev.type==KeyPress)
-        popup_menu(&ev);
+      if((ev.type==ButtonPress && ev.xbutton.button==button))
+	{
+	  mode = MODE_MOUSE;
+	  popup_menu(&ev);
+	}
+      if (ev.type==KeyPress)
+	{
+	  mode = MODE_CENTERED;
+	  popup_menu(&ev);
+	}
       if(ev.type==PropertyNotify && ev.xproperty.atom==gnome[WIN_DESKTOP_BUTTON_PROXY])
       {
         proxy_win=get_gnome_hint(root, WIN_DESKTOP_BUTTON_PROXY);
         XSelectInput(dpy, proxy_win, SubstructureNotifyMask);
       }
     }
-    usleep(5);
+    usleep(50);
   }
   return 0;
 }

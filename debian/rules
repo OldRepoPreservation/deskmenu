@@ -7,8 +7,7 @@ configure: configure-stamp
 configure-stamp:
 	dh_testdir
 	# Add here commands to configure the package.
-	
-
+	./configure --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info
 	touch configure-stamp
 
 build: configure-stamp build-stamp
@@ -27,7 +26,7 @@ clean:
 	rm -f build-stamp configure-stamp
 
 	# Add here commands to clean up after the build process.
-	-$(MAKE) clean
+	-$(MAKE) distclean
 
 	dh_clean
 
@@ -52,8 +51,7 @@ binary-arch: build install
 	dh_installdocs
 	dh_installexamples
 	dh_installmenu
-	dh_installman debian/deskmenu.1
-	dh_installchangelogs CHANGES
+	dh_installchangelogs
 	dh_link
 	dh_strip
 	dh_compress

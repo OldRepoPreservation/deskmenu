@@ -22,6 +22,8 @@
 #include "deskmenu.h"
 
 int confirm=False;
+/* display the menu centered or under the mouse */
+int mode=0;
 
 void run_program(GtkWidget *widget, char *cmd)
 {
@@ -209,8 +211,16 @@ void menu_pos(GtkMenu *m, int *x, int *y, XEvent *ev)
   h=GTK_WIDGET(m)->requisition.height;
   gdk_window_get_size(GDK_ROOT_PARENT(), &dw, &dh);
 
-  *x=ev->xbutton.x;
-  *y=ev->xbutton.y;
+  if (mode == MODE_MOUSE)
+    {
+      *x=ev->xbutton.x;
+      *y=ev->xbutton.y;
+    }
+  else
+    {
+      *x=dw/2;
+      *y=dh/2;
+    }
 
   if(*x>dw-w) *x=dw-w;
   if(*y>dh-h) *y=dh-h;

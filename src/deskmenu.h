@@ -47,6 +47,9 @@
 
 #define WIN_HINTS_SKIP_WINLIST		(1L<<1)
 
+#define MODE_MOUSE				0
+#define MODE_CENTERED				1
+
 /* deskmenu.c */
 extern Display *dpy;
 extern int scr, quit_menu;
@@ -57,7 +60,13 @@ extern long get_wm_state(Window);
 extern void set_gnome_hint(Window, int, long);
 extern long get_gnome_hint(Window, int);
 
+/* keyboard.c */
+extern int NumLockMask, CapsLockMask, ScrollLockMask;
+extern void grab_key(int, unsigned int, Window);
+extern void init_keyboard(void);
+
 /* popup.c */
+extern int mode;
 extern void popup_menu(XEvent *);
 extern GtkWidget *add_menu_item(GtkMenu *, char *, GtkSignalFunc, gpointer);
 
