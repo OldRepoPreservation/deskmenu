@@ -27,6 +27,7 @@ int scr, quit_menu=False, button=Button2;
 Atom wm_state, gnome[GNOME_HINT_COUNT];
 Window root, proxy_win;
 int NumLockMask, CapsLockMask, ScrollLockMask;
+char *locale;
 
 void signal_handler(int signal)
 {
@@ -142,6 +143,7 @@ void initialize(int argc, char *argv[])
   printf("initialize\n");
 #endif
 
+  locale = gtk_set_locale();
   gtk_init(&argc, &argv);
   for(i=1;i<argc;i++)
   {

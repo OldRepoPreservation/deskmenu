@@ -31,6 +31,38 @@ void raise_window(GtkWidget *widget, Window win)
   XSetInputFocus(dpy, win, RevertToPointerRoot, CurrentTime);
 }
 
+char *
+get_icon_name (Window win)
+{
+  XTextProperty text_prop;
+  int status;
+  char *iconname;
+
+  status = XGetWMIconName (dpy, win, &text_prop);
+  if (!status || !text_prop.value || !text_prop.nitems)
+    return NULL;
+  if (text_prop.encoding == XA_STRING)
+    {
+      if (!text_prop.value)
+	return NULL;
+      iconname = (char *) strdup (text_prop.value);
+      XFree (text_prop.value);
+      return iconname;
+    }
+  else
+    {
+      char **list;
+      int num;
+      XmbTextPropertyToTextList (dpy, &text_prop, &list, &num);
+      if (!num || !*list)
+	return NULL;
+      XFree (text_prop.value);
+      iconname = (char *) strdup (*list);
+      XFreeStringList (list);
+      return iconname;
+    }
+}
+
 void add_windows_menu(GtkMenu *menu, char *title)
 {
   GtkWidget *menu_item, *win_menu;
@@ -51,15 +83,18 @@ void add_windows_menu(GtkMenu *menu, char *title)
   {
     if(!(get_gnome_hint(*win, WIN_HINTS)&WIN_HINTS_SKIP_WINLIST) && (get_gnome_hint(*win, WIN_WORKSPACE)==get_gnome_hint(root, WIN_WORKSPACE)))
     {
-      XFetchName(dpy, *win, &name);
-      if(strlen(name)>=25)
-        strcpy(name+21, "...");
-      strcpy(label, name);
-      if(get_wm_state(*win)==IconicState)
-        sprintf(label, "[%s]", name);
-       
-      add_menu_item(GTK_MENU(win_menu), label, raise_window, (gpointer) *win);
-      if(name) XFree(name);
+      name = get_icon_name(*win);
+      if (name)
+	{
+	  if(strlen(name)>=25)
+	    strcpy(name+21, "...");
+	  strcpy(label, name);
+	  if(get_wm_state(*win)==IconicState)
+	    sprintf(label, "[%s]", name);
+	   
+	  add_menu_item(GTK_MENU(win_menu), label, raise_window, (gpointer) *win);
+	  XFree(name);
+	}
     }
     if(win) XFree(win);
   }

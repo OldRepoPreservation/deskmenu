@@ -52,6 +52,7 @@ extern Display *dpy;
 extern int scr, quit_menu;
 extern Window root, proxy_win;
 extern Atom wm_state, gnome[GNOME_HINT_COUNT];
+extern char *locale;
 extern long get_wm_state(Window);
 extern void set_gnome_hint(Window, int, long);
 extern long get_gnome_hint(Window, int);
@@ -61,6 +62,7 @@ extern void popup_menu(XEvent *);
 extern GtkWidget *add_menu_item(GtkMenu *, char *, GtkSignalFunc, gpointer);
 
 /* window.c */
+extern char *get_icon_name (Window win);
 extern void add_windows_menu(GtkMenu *, char *);
 
 /* workspace.c */
