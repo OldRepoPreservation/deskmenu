@@ -7,6 +7,9 @@ configure: configure-stamp
 configure-stamp:
 	dh_testdir
 	# Add here commands to configure the package.
+	# first check if the configure already exists, if not generate it.
+	test -f configure || $(MAKE) -f Makefile.cvs
+	# then run it
 	./configure --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info
 	touch configure-stamp
 

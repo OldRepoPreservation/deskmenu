@@ -27,55 +27,61 @@ int NumLockMask, CapsLockMask, ScrollLockMask;
 void
 init_keyboard ()
 {
-  XModifierKeymap *xmk = NULL;
-  KeyCode *map;
-  int m, k;
+	XModifierKeymap *xmk = NULL;
+	KeyCode *map;
+	int m, k;
 
 #ifdef DEBUG
-  printf ("init_keyboard\n");
+	printf ("init_keyboard\n");
 #endif
 
-  xmk = XGetModifierMapping (dpy);
-  if (xmk)
-    {
-      map = xmk->modifiermap;
-      for (m = 0; m < 8; m++)
-	for (k = 0; k < xmk->max_keypermod; k++, map++)
-	  {
-	    if (*map == XKeysymToKeycode (dpy, XK_Num_Lock))
-	      NumLockMask = (1 << m);
-	    if (*map == XKeysymToKeycode (dpy, XK_Caps_Lock))
-	      CapsLockMask = (1 << m);
-	    if (*map == XKeysymToKeycode (dpy, XK_Scroll_Lock))
-	      ScrollLockMask = (1 << m);
-	  }
-      XFreeModifiermap (xmk);
-    }
+	xmk = XGetModifierMapping (dpy);
+	if (xmk)
+		{
+			map = xmk->modifiermap;
+			for (m = 0; m < 8; m++)
+				for (k = 0; k < xmk->max_keypermod; k++, map++)
+					{
+						if (*map == XKeysymToKeycode (dpy, XK_Num_Lock))
+							NumLockMask = (1 << m);
+						if (*map == XKeysymToKeycode (dpy, XK_Caps_Lock))
+							CapsLockMask = (1 << m);
+						if (*map == XKeysymToKeycode (dpy, XK_Scroll_Lock))
+							ScrollLockMask = (1 << m);
+					}
+			XFreeModifiermap (xmk);
+		}
 }
 
 void
 grab_key (int keycode, unsigned int modifiers, Window w)
 {
-  if (keycode)
-    {
-      XGrabKey (dpy, keycode, modifiers, w, False, GrabModeAsync,
-		GrabModeAsync);
-      XGrabKey (dpy, keycode, modifiers | NumLockMask, w, False,
-		GrabModeAsync, GrabModeAsync);
-      XGrabKey (dpy, keycode, modifiers | CapsLockMask, w, False,
-		GrabModeAsync, GrabModeAsync);
-      XGrabKey (dpy, keycode, modifiers | ScrollLockMask, w, False,
-		GrabModeAsync, GrabModeAsync);
-      XGrabKey (dpy, keycode, modifiers | ScrollLockMask | CapsLockMask, w,
-		False, GrabModeAsync, GrabModeAsync);
-      XGrabKey (dpy, keycode, modifiers | NumLockMask | CapsLockMask, w,
-		False, GrabModeAsync, GrabModeAsync);
-      XGrabKey (dpy, keycode, modifiers | NumLockMask | ScrollLockMask, w,
-		False, GrabModeAsync, GrabModeAsync);
-      XGrabKey (dpy, keycode,
-		modifiers | NumLockMask | CapsLockMask | ScrollLockMask, w,
-		False, GrabModeAsync, GrabModeAsync);
-    }
+	if (keycode)
+		{
+			XGrabKey (dpy, keycode, modifiers, w, False, GrabModeAsync,
+								GrabModeAsync);
+			XGrabKey (dpy, keycode, modifiers | NumLockMask, w, False,
+								GrabModeAsync, GrabModeAsync);
+			XGrabKey (dpy, keycode, modifiers | CapsLockMask, w, False,
+								GrabModeAsync, GrabModeAsync);
+			XGrabKey (dpy, keycode, modifiers | ScrollLockMask, w, False,
+								GrabModeAsync, GrabModeAsync);
+			XGrabKey (dpy, keycode, modifiers | ScrollLockMask | CapsLockMask, w,
+								False, GrabModeAsync, GrabModeAsync);
+			XGrabKey (dpy, keycode, modifiers | NumLockMask | CapsLockMask, w,
+								False, GrabModeAsync, GrabModeAsync);
+			XGrabKey (dpy, keycode, modifiers | NumLockMask | ScrollLockMask, w,
+								False, GrabModeAsync, GrabModeAsync);
+			XGrabKey (dpy, keycode,
+								modifiers | NumLockMask | CapsLockMask | ScrollLockMask, w,
+								False, GrabModeAsync, GrabModeAsync);
+		}
 }
 
-/* vim600:set foldmarker={{{,}}} foldmethod=marker: */
+/***This must remain at the end of the file.*****
+ * vi:set sw=2 ts=2:                            *
+ * vi:set cindent cinoptions={1s,>2s,^-1s,n-1s: *
+ * vi:set foldmethod=marker:                    *
+ * vi:set foldmarker=«««,»»»:                   *
+ ************************************************/
+

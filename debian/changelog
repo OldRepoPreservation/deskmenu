@@ -1,3 +1,10 @@
+deskmenu (1.4.1-1) unstable; urgency=low
+
+  * New Release, now xmalloc.c free, since its not necessary. (This should
+    fix some build problems on BSD's.
+
+ -- Stefan Pfetzing <dreamind@dreamind.de>  Thu, 13 Mar 2003 03:08:34 +0100
+
 deskmenu (1.4.0-2) unstable; urgency=high
 
   * Updated the rc-example.
@@ -111,5 +118,6 @@ deskmenu (1.3.0-1) unstable; urgency=low
   * Initial Release.
   * Closes wnpp bug filed for packaging
     Closes: #108614
+  * Added CTRL+ESC hot key to popup menu.
 
  -- Brandon L. Griffith <brandon@debian.org>  Wed, 15 Aug 2001 00:01:59 -0400

@@ -2,7 +2,7 @@ dnl Process this file with autoconf to produce a configure script.
 
 AC_INIT(src/deskmenu.c)
 dnl Every other copy of the package version number gets its value from here
-AM_INIT_AUTOMAKE(deskmenu, 1.4.0)
+AM_INIT_AUTOMAKE(`sed 's/ .*$//; q' debian/changelog`, `sed 's/^.*(\(.*\)-.*).*$/\1/; q' debian/changelog`)
 GTK_REQUIRED=2.0.3
 
 dnl create a src/config.h file (Automake will add -DHAVE_CONFIG_H)

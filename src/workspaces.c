@@ -24,67 +24,77 @@
 void
 change_workspace (GtkWidget * widget, long ws)
 {
-  XEvent ev;
+	XEvent ev;
 
 #ifdef DEBUG
-  printf ("change_workspace\n");
+	printf ("change_workspace\n");
 #endif
 
-  ev.type = ClientMessage;
-  ev.xclient.window = root;
-  ev.xclient.message_type = gnome[WIN_WORKSPACE];
-  ev.xclient.format = 32;
-  ev.xclient.data.l[0] = ws;
-  XSendEvent (dpy, root, False,
-	      SubstructureNotifyMask | SubstructureRedirectMask, &ev);
+	ev.type = ClientMessage;
+	ev.xclient.window = root;
+	ev.xclient.message_type = gnome[WIN_WORKSPACE];
+	ev.xclient.format = 32;
+	ev.xclient.data.l[0] = ws;
+	XSendEvent (dpy, root, False,
+							SubstructureNotifyMask | SubstructureRedirectMask, &ev);
 }
 
 void
 add_workspace (GtkWidget * widget)
 {
 #ifdef DEBUG
-  printf ("add_workspace\n");
+	printf ("add_workspace\n");
 #endif
 
-  set_gnome_hint (root, WIN_WORKSPACE_COUNT,
-		  get_gnome_hint (root, WIN_WORKSPACE_COUNT) + 1);
+	set_gnome_hint (root, WIN_WORKSPACE_COUNT,
+									get_gnome_hint (root, WIN_WORKSPACE_COUNT) + 1);
 }
 
 void
 del_workspace (GtkWidget * widget)
 {
 #ifdef DEBUG
-  printf ("del_workspace\n");
+	printf ("del_workspace\n");
 #endif
 
-  set_gnome_hint (root, WIN_WORKSPACE_COUNT,
-		  get_gnome_hint (root, WIN_WORKSPACE_COUNT) - 1);
+	set_gnome_hint (root, WIN_WORKSPACE_COUNT,
+									get_gnome_hint (root, WIN_WORKSPACE_COUNT) - 1);
 }
 
 void
 add_workspace_menu (GtkMenu * menu, char *title)
 {
-  GtkWidget *menu_item, *ws_menu;
-  int ws, ws_count;
-  char caption[255];
+	GtkWidget *menu_item, *ws_menu;
+	int ws, ws_count;
+	char caption[255];
 
 #ifdef DEBUG
-  printf ("add_workspace_menu\n");
+	printf ("add_workspace_menu\n");
 #endif
 
-  ws_menu = gtk_menu_new ();
-  ws_count = get_gnome_hint (root, WIN_WORKSPACE_COUNT);
-  for (ws = 0; ws < ws_count; ws++)
-    {
-      sprintf (caption, "Workspace %d %s", ws + 1,
-	       ws == get_gnome_hint (root, WIN_WORKSPACE) ? "*" : " ");
-      add_menu_item (GTK_MENU (ws_menu), caption, G_CALLBACK(change_workspace),
-		     (gpointer) ws);
-    }
-  add_menu_item (GTK_MENU (ws_menu), NULL, NULL, NULL);
-  add_menu_item (GTK_MENU (ws_menu), "Add Workspace", G_CALLBACK(add_workspace), NULL);
-  add_menu_item (GTK_MENU (ws_menu), "Delete Workspace", G_CALLBACK(del_workspace), NULL);
+	ws_menu = gtk_menu_new ();
+	ws_count = get_gnome_hint (root, WIN_WORKSPACE_COUNT);
+	for (ws = 0; ws < ws_count; ws++)
+		{
+			sprintf (caption, "Workspace %d %s", ws + 1,
+							 ws == get_gnome_hint (root, WIN_WORKSPACE) ? "*" : " ");
+			add_menu_item (GTK_MENU (ws_menu), caption,
+										 G_CALLBACK (change_workspace), (gpointer) ws);
+		}
+	add_menu_item (GTK_MENU (ws_menu), NULL, NULL, NULL);
+	add_menu_item (GTK_MENU (ws_menu), "Add Workspace",
+								 G_CALLBACK (add_workspace), NULL);
+	add_menu_item (GTK_MENU (ws_menu), "Delete Workspace",
+								 G_CALLBACK (del_workspace), NULL);
 
-  menu_item = add_menu_item (GTK_MENU (menu), title, NULL, NULL);
-  gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu_item), ws_menu);
+	menu_item = add_menu_item (GTK_MENU (menu), title, NULL, NULL);
+	gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu_item), ws_menu);
 }
+
+/***This must remain at the end of the file.*****
+ * vi:set sw=2 ts=2:                            *
+ * vi:set cindent cinoptions={1s,>2s,^-1s,n-1s: *
+ * vi:set foldmethod=marker:                    *
+ * vi:set foldmarker=«««,»»»:                   *
+ ************************************************/
+
