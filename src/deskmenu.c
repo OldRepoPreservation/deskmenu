@@ -365,7 +365,9 @@ A root menu for X.\n"), program_name);
   printf (_("Usage: %s [OPTION]... \n"), program_name);
   printf (_("\
 Options:\n\
-  -r, --file=FILE            use an alternative rcfile\n\
+  -b, --button=n             sets which mouse button is used\n\
+                             to invoke deskmenu\n\
+  -f, --file=FILE            use an alternative rcfile\n\
                              instead of $HOME/.deskmenurc\n\
   -q, --quit-menu            display a quit menu\n\
   --verbose                  print more information\n\

@@ -1,3 +1,10 @@
+deskmenu (1.3.3-1) unstable; urgency=low
+
+  * Corrected the Manpage.
+  * Added --button to --help.
+
+ -- Stefan Pfetzing <dreamind@dreamind.de>  Mon,  5 Aug 2002 13:42:47 +0200
+
 deskmenu (1.3.2-1) unstable; urgency=low
 
   * Make --button work again.
