@@ -25,6 +25,9 @@ int confirm = False;
 /* display the menu centered or under the mouse */
 int mode = 0;
 
+/* it seems the gtk_menu_popup isn't working correctly. */
+XEvent *ev_menu;
+
 void
 run_program (GtkWidget * widget, char *cmd)
 {
@@ -70,12 +73,12 @@ quit (GtkWidget * widget)
   ok = gtk_button_new_with_label ("Ok");
   cancel = gtk_button_new_with_label ("Cancel");
 
-  gtk_signal_connect (GTK_OBJECT (dialog), "destroy",
-		      GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
-  gtk_signal_connect (GTK_OBJECT (ok), "clicked", GTK_SIGNAL_FUNC (ok_click),
+  g_signal_connect (G_OBJECT (dialog), "destroy",
+		      G_CALLBACK (gtk_main_quit), NULL);
+  g_signal_connect (G_OBJECT (ok), "clicked", G_CALLBACK (ok_click),
 		      NULL);
-  gtk_signal_connect_object (GTK_OBJECT (cancel), "clicked",
-			     GTK_SIGNAL_FUNC (gtk_widget_destroy),
+  g_signal_connect_swapped (G_OBJECT (cancel), "clicked",
+			     G_CALLBACK (gtk_widget_destroy),
 			     (gpointer) dialog);
 
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), label, TRUE, TRUE,
@@ -85,7 +88,7 @@ quit (GtkWidget * widget)
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->action_area), cancel,
 		      TRUE, TRUE, 0);
 
-  gtk_container_border_width (GTK_CONTAINER (dialog), 5);
+  gtk_container_set_border_width (GTK_CONTAINER (dialog), 5);
   gtk_window_set_title (GTK_WINDOW (dialog), "Confirm");
   gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_CENTER);
   gtk_window_set_policy (GTK_WINDOW (dialog), FALSE, FALSE, TRUE);
@@ -99,7 +102,7 @@ quit (GtkWidget * widget)
 }
 
 GtkWidget *
-add_menu_item (GtkMenu * menu, char *label, GtkSignalFunc fn, gpointer data)
+add_menu_item (GtkMenu * menu, char *label, GCallback fn, gpointer data)
 {
   GtkWidget *menu_item;
 
@@ -112,9 +115,9 @@ add_menu_item (GtkMenu * menu, char *label, GtkSignalFunc fn, gpointer data)
   else
     menu_item = gtk_menu_item_new_with_label (label);
   if (fn)
-    gtk_signal_connect (GTK_OBJECT (menu_item), "activate", fn, data);
+    g_signal_connect (GTK_OBJECT (menu_item), "activate", G_CALLBACK(fn), data);
   gtk_widget_show (menu_item);
-  gtk_menu_append (menu, menu_item);
+  gtk_menu_shell_append (GTK_MENU_SHELL(menu), menu_item);
   return menu_item;
 }
 
@@ -146,8 +149,7 @@ build_submenu (FILE * rc, GtkWidget * menu)
 		  rvalue = strtok (NULL, "\n");
 		  if (rvalue)
 		    {
-		      add_menu_item (GTK_MENU (menu), lvalue, run_program,
-				     strdup (rvalue));
+		      add_menu_item (GTK_MENU (menu), lvalue, G_CALLBACK(run_program), strdup (rvalue));
 		    }
 		}
 	    }
@@ -227,17 +229,17 @@ build_menu (char *file)
   if (quit_menu)
     {
       add_menu_item (GTK_MENU (menu), NULL, NULL, NULL);
-      add_menu_item (GTK_MENU (menu), "Quit", GTK_SIGNAL_FUNC (quit), NULL);
+      add_menu_item (GTK_MENU (menu), "Quit", G_CALLBACK (quit), NULL);
     }
 
-  gtk_signal_connect (GTK_OBJECT (menu), "deactivate",
-		      GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
+  g_signal_connect (GTK_OBJECT (menu), "deactivate",
+		      G_CALLBACK (gtk_main_quit), NULL);
 
   return menu;
 }
 
 void
-menu_pos (GtkMenu * m, int *x, int *y, XEvent * ev)
+menu_pos (GtkMenu * m, int *x, int *y, gpointer data)
 {
   int w, h, dw, dh;
 
@@ -247,8 +249,8 @@ menu_pos (GtkMenu * m, int *x, int *y, XEvent * ev)
 
   if (mode == MODE_MOUSE)
     {
-      *x = ev->xbutton.x;
-      *y = ev->xbutton.y;
+      *x = ev_menu->xbutton.x;
+      *y = ev_menu->xbutton.y;
     }
   else
     {
@@ -268,8 +270,9 @@ popup_menu (XEvent * ev)
   GtkWidget *root_menu;
 
   root_menu = build_menu (rcfile);
+	ev_menu = ev;
   gtk_menu_popup (GTK_MENU (root_menu), NULL, NULL,
-		  (GtkMenuPositionFunc) menu_pos, ev, ev->xbutton.button,
+		  (GtkMenuPositionFunc)menu_pos, ev, ev->xbutton.button,
 		  ev->xbutton.time);
   gtk_main ();
   gtk_widget_destroy (root_menu);

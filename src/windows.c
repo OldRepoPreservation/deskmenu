@@ -99,7 +99,7 @@ add_windows_menu (GtkMenu * menu, char *title)
 	      if (get_wm_state (*win) == IconicState)
 		sprintf (label, "[%s]", name);
 
-	      add_menu_item (GTK_MENU (win_menu), label, raise_window,
+	      add_menu_item (GTK_MENU (win_menu), label, G_CALLBACK(raise_window),
 			     (gpointer) * win);
 	      XFree (name);
 	    }
