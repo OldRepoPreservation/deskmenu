@@ -9,8 +9,13 @@
 # include=filename
 # windowlist=label
 # workspaces=label
+# keycode=modifier+keyname
+#   for example Control+Escape
+#   this keycode is used as "hotkey"
+#   to display the menu.
 #
 
+keycode=Control+Escape
 menuitem=Terminal:x-terminal-emulator
 menuitem=Run Program:gmrun
 

@@ -1,3 +1,11 @@
+deskmenu (1.4.0-2) unstable; urgency=high
+
+  * Updated the rc-example.
+  * Updated the Build-depends.
+    Closes: #159230
+
+ -- Stefan Pfetzing <dreamind@dreamind.de>  Mon,  2 Sep 2002 19:15:53 +0200
+
 deskmenu (1.4.0-1) unstable; urgency=low
 
   * Added GTK2.0 Stuff!
