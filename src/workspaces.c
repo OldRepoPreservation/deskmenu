@@ -78,12 +78,12 @@ add_workspace_menu (GtkMenu * menu, char *title)
     {
       sprintf (caption, "Workspace %d %s", ws + 1,
 	       ws == get_gnome_hint (root, WIN_WORKSPACE) ? "*" : " ");
-      add_menu_item (GTK_MENU (ws_menu), caption, change_workspace,
+      add_menu_item (GTK_MENU (ws_menu), caption, G_CALLBACK(change_workspace),
 		     (gpointer) ws);
     }
   add_menu_item (GTK_MENU (ws_menu), NULL, NULL, NULL);
-  add_menu_item (GTK_MENU (ws_menu), "Add Workspace", add_workspace, NULL);
-  add_menu_item (GTK_MENU (ws_menu), "Delete Workspace", del_workspace, NULL);
+  add_menu_item (GTK_MENU (ws_menu), "Add Workspace", G_CALLBACK(add_workspace), NULL);
+  add_menu_item (GTK_MENU (ws_menu), "Delete Workspace", G_CALLBACK(del_workspace), NULL);
 
   menu_item = add_menu_item (GTK_MENU (menu), title, NULL, NULL);
   gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu_item), ws_menu);
