@@ -1,0 +1,29 @@
+DeskMenu
+========
+Copyright(c) Ken Lynch, 2001
+Distributed under the GPL
+See LICENSE for more details
+
+Requirements
+============
+Deskmenu requires the gtk+ widget set.
+
+Installation
+============
+Type the following:
+
+	make
+	make install
+
+Usage
+=====
+DeskMenu is a root menu program which is activated by clicking the root window.
+It is configured from a .deskmenurc file in your home directory, see example_rc
+for more details.
+
+You can use deskmenu for session management by making it the last line of your
+.xinitrc and using the -quit command line option, which adds a quit option to
+the menu.
+
+You can set which button to use by using the -button=n option, where n is the
+button number, the default is button 2.

@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+
+if [ "$1" = "remove" ]; then
+	if [ -x /usr/sbin/wm-menu-config ]; then
+		wm-menu-config deskmenu off
+	fi
+fi
+
+#DEBHELPER#

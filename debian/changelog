@@ -1,0 +1,72 @@
+deskmenu (1.3.0-8) unstable; urgency=low
+
+  * Fixed the menu generating script to use x-terminal-emulator
+    Closes: #148946
+  * New Maintainer.
+  * New upstream Maintainer.
+
+ -- Stefan Pfetzing <dreamind@dreamind.de>  Wed,  5 Jun 2002 09:43:46 +0200
+
+deskmenu (1.3.0-7) unstable; urgency=low
+
+  * Fixed typo in man page.
+    Closes: #128127
+  * Deskmenu is now unmaintain upstream. I really don't have enough time
+    on my hands to take over as upstream author. If anyone would like this
+    job, or has enough time to fix the current bugs please contact me.
+
+ -- Brandon L. Griffith <brandon@debian.org>  Wed,  3 Apr 2002 12:26:11 -0500
+
+deskmenu (1.3.0-6) unstable; urgency=low
+
+  * Fixed a spelling error in the description.
+  Closes: #124543
+
+ -- Brandon L. Griffith <brandon@debian.org>  Mon, 31 Dec 2001 13:00:02 -0500
+
+deskmenu (1.3.0-5) unstable; urgency=low
+
+  * Thanks to a patch by Martin Hedenfalk <mhe@home.se> deskmenu now has
+    support for the debian menuing system, thanks alot Martin.
+  * I rewrote the manpage to reflect the changes in the .deskmenurc syntax, as
+    well as expanded on it a little more.
+  * The syntax of the .deskmenurc has changed. Please look at the README.Debian
+    in this directory.
+
+ -- Brandon L. Griffith <brandon@debian.org>  Sun,  9 Sep 2001 01:40:51 -0400
+
+deskmenu (1.3.0-4) unstable; urgency=low
+
+  * Added a manpage. The program did not come with one so I whipped something
+    up from the info in the README
+  * Changed a section in the copyright that caused lintian to complain.
+
+ -- Brandon L. Griffith <brandon@debian.org>  Mon, 27 Aug 2001 09:50:16 -0400
+
+deskmenu (1.3.0-3) unstable; urgency=low
+
+  * Changed an entry in the sample deskmenurc which pointed to a program that
+    is obviously not in Debian.
+  * Fixed a typo in the program description.
+    Closes: #109119
+
+ -- Brandon L. Griffith <brandon@debian.org>  Sat, 18 Aug 2001 23:46:26 -0400
+
+deskmenu (1.3.0-2) unstable; urgency=low
+
+  * Failed to add Build Depends
+    Closes: #108966
+
+ -- Brandon L. Griffith <brandon@debian.org>  Fri, 17 Aug 2001 09:26:09 -0400
+
+deskmenu (1.3.0-1) unstable; urgency=low
+
+  * Initial Release.
+  * Closes wnpp bug filed for packaging
+    Closes: #108614
+
+ -- Brandon L. Griffith <brandon@debian.org>  Wed, 15 Aug 2001 00:01:59 -0400
+
+Local variables:
+mode: debian-changelog
+End:

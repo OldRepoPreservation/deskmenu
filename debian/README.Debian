@@ -1,0 +1,66 @@
+deskmenu for Debian GNU/Linux
+
+This package of deskmenu has been patched with a diff from Martin Hedenfalk
+<mhe@home.se>. This patch allows for deep submenu recursion, which in turn
+allows for the debian menu-method to be available. In doing this the syntax for
+the .deskmenurc has changed from the origonal syntax and is as follows:
+
+# menuitem=label:command
+# menuitem=label:command
+# divider=
+#
+# submenu=label
+# 	menuitem=label:command
+#	menuitem=label:command
+#	menuitem=label:command
+# endmenu=
+#
+# divider=
+# include=/path/to/include.file
+# divider=
+#
+# windowlist=label
+# workspaces=label
+
+The example above is a little untrue, you cannot have whitespaces in front of 
+the menu hooks. I included them there for clarity, blank lines are ok in the
+.deskmenurc file. Each time submenu= is defined it must be undefined with 
+endmenu=. This allows for deep recursion of submenus per the following example:
+
+submenu=Programs
+submenu=Net
+submenu=Browsers
+menuitem=Netscape:/usr/bin/netscape
+menuitem=Mozilla:/usr/bin/mozilla
+menuitem=Opera:/usr/bin/opera
+endmenu=
+endmenu=
+endmenu=
+
+A new menu hook has been added, it is include=
+include= allows you to break your menu up into submenus, so you can have a
+.deskmenurc that defines
+
+include=~/.deskmenu/network_programs.hook
+include=~/.deskmenu/remote_machines_.hook
+include=~/.deskmenu/graphics_programs_hook
+
+Each of these include files must start with the submenu= hook. The first
+submenu= hook will be used to create the title (label) for the submenu on the
+main menu. So network_programs.hook might look like:
+
+submenu=NetWork
+submenu=Browsers
+menuitem=Netscape:/usr/bin/netscape
+menuitem=Mozilla:/usr/bin/mozilla
+endmenu=
+submenu=Games
+menuitem=Net-Toe:x-terminal-emulator -e nettoe
+endmenu=
+endmenu=
+
+I hope this clears a few things up. The debian menu is located as
+/etc/deskmenurc.debian and an example of it's inclusion is in the
+/usr/doc/deskmenu/examples/example_rc file.
+
+Brandon L. Griffith <brandon@debian.org>

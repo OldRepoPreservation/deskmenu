@@ -1,0 +1,15 @@
+Source: deskmenu
+Section: x11
+Priority: optional
+Maintainer: Stefan Pfetzing <dreamind@dreamind.de>
+Build-Depends: debhelper (>= 2.0), libgtk1.2-dev
+Standards-Version: 3.5.2
+
+Package: deskmenu
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: A root menu for X11 window managers
+ DeskMenu is a root menu program which is activated by clicking the root
+ window. It is configured from a .deskmenurc file in your home directory.
+ DeskMenu is useful for window managers which do not provide a menu such as
+ Oroborus.

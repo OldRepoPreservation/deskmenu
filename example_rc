@@ -1,0 +1,41 @@
+# Example .deskmenurc file
+#
+# Syntax
+#
+# menuitem=label:command
+# submenu=label
+# endmenu=
+# divider=
+# include=filename
+# windowlist=label
+# workspaces=label
+#
+
+menuitem=Terminal:x-terminal-emulator
+menuitem=Run Program:gmrun
+
+divider=
+
+submenu=Graphics
+menuitem=The Gimp:gimp
+menuitem=Electric Eyes:ee
+menuitem=Xv:xv
+endmenu=
+
+submenu=Multimedia
+menuitem=GQmpeg:gqmpeg
+menuitem=Audio Mixer:gmix
+endmenu=
+
+submenu=Games
+menuitem=XBill:gnome-xbill
+menuitem=FreeCell:freecell
+endmenu=
+
+divider=
+include=/etc/deskmenurc.debian
+
+divider=
+
+windowlist=Window List
+workspaces=Workspaces

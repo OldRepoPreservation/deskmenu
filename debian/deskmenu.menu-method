@@ -1,0 +1,19 @@
+#!/usr/sbin/install-menu
+compat="menu-1"
+
+!include menu.h
+
+supported
+  x11=	"menuitem=" $title ":" $command"\n"
+  text= "menuitem=" $title ":" "x-terminal-emulator -T \"" $title "\" -e " $command"\n"
+endsupported
+
+genmenu="deskmenurc.debian"
+
+startmenu="submenu=" $title "\n"
+endmenu="endmenu=\n"
+
+userprefix=""
+rootprefix="/etc"
+
+treewalk="(cm)"
