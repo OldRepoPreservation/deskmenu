@@ -185,6 +185,7 @@ GtkWidget *build_menu(char *dir, char *file)
   if((rc=fopen(rc_file, "r"))) {
 	  menu = gtk_menu_new();
 	  build_submenu(rc, menu);
+	  fclose(rc);
   }
 
   if(quit_menu)
@@ -194,6 +195,9 @@ GtkWidget *build_menu(char *dir, char *file)
   }
 
   gtk_signal_connect(GTK_OBJECT(menu), "deactivate", GTK_SIGNAL_FUNC(gtk_main_quit), NULL);
+
+  free(rc_file);
+  
   return menu;
 }
 
