@@ -14,25 +14,32 @@ It is configured from a .deskmenurc file in your home
 directory, see example_rc for more details.
 .LP 
 You can use deskmenu for session management by making it the
-last line of your .xinitrc and using the \-quit command line
+last line of your .xinitrc and using the \-\-quit command line
 option, which adds a quit option to the menu.
 .LP 
-NOTE: Deskmenu will do nothing unless you have a ${HOME}/.deskmenurc file.
+NOTE: Deskmenu will do nothing unless you have a ${HOME}/.deskmenurc file or a /etc/deskmenurc (/etc/deskmenurc.debian is automatically generated)
 .br 
 This manpage is specific to the debian package of deskmenu.
+.br
+\fBIMPORTANT NOTE:\fR
+You have to set a keycode, when using this version of keylaunch, in your config file.
 .SH "OPTIONS"
 .LP 
 .TP 
-\fB\-button=n\fR
+\fB\-b, \-\-button=n\fR
 Sets which mouse button is used to invoke deskmenu
+.LP 
+.TP 
+\fB\-f, \-\-file=n\fR
+Sets which config file will be used for deskmenu
+.LP 
+.TP 
+\fB\-\-quit-menu\fR
+Display a "Quit-Menu" in the deskmenu
 .LP 
 The most common ways of invoking deskmenu
 .LP 
-deskmenu \-button=1
-.br 
-deskmenu \-button=2
-.br 
-deskmenu \-button=3
+deskmenu \-\-button=[1...5] \-\-file=/home/user/.deskmenurc.example
 .SH "FILES"
 .LP 
 \fI${HOME}/.deskmenurc\fP
@@ -56,6 +63,17 @@ deskmenu \-button=3
 # workspaces=label
 .br 
 # include=/path/to/include_file
+.br 
+# keycode=modifier+keyname
+.br 
+#   for example Control+Escape
+.br 
+#   this keycode is used as "hotkey"
+.br 
+#   to display the menu.
+.br 
+#
+.br 
 .LP 
 menuitem=Terminal:x\-terminal\-emulator
 .br 
@@ -88,7 +106,9 @@ windowlist=Window List
 workspaces=Workspaces
 .SH "AUTHORS"
 .LP 
- Ken Lynch <kenlynch@blueyonder.co.uk>
+Ken Lynch <kenlynch@blueyonder.co.uk> (c) 2001
+.br
+Stefan Pfetzing <dreamind@dreamind.de> (c) 2002
 .LP 
 This manpage was written for the Debian GNU/Linux package of
 this program by 
